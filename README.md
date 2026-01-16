@@ -1,4 +1,4 @@
-# Chromezone Self-Service Kiosk
+# K-12 Chromebook Self-Service Kiosk
 
 A lightweight, offline-first self-service troubleshooting kiosk for K-12 students using ChromeOS Chromebooks.
 
@@ -170,11 +170,8 @@ Chromezone is a self-service kiosk application designed for ChromeOS devices in 
 >
 > **What's happening when you try to sign in?**
 >
-> - Wrong password / "Incorrect password"
+> - Wrong password / "Password can't be verified"
 > - Account not found / "Couldn't find your account"
-> - Need to remove an old account first
-> - 2-Step Verification issue
-> - Account is locked or suspended
 > - Something else
 
 **Step 2: Password Check**
