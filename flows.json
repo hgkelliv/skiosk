@@ -19,8 +19,8 @@
         ]
       },
       {
-        "instruction": "**Password Can't be Verified**\n\nFirst, Remove your account from your Chromebook.\n\n1. On the lock screen, click the small arrow next to your last name. \n2. As message will appear asking if you want to Remove the account. Click Remove account. Click again to confirm.\n3. In the bottom left corner of your screen, click Shut Down to shut down your Chromebook.",
-        "details": "Once your Chromebook is shut down, press the power button again to turn it back on, then attempt to sign in to your Chromebook again.",
+        "instruction": "**Password Can't be Verified**\n\nFirst, Remove your account from your Chromebook.\n\n1. On the lock screen, click the small arrow next to your last name. \n2. As message will appear asking if you want to Remove the account. Click Remove account. Click again to confirm.\n3. In the bottom left corner of your screen, click Shut Down to shut down your Chromebook. Once your Chromebook is shut down, press the power button again to turn it back on, then attempt to sign in to your Chromebook again.",
+        "details": "Make sure you are on the Sign in to Google page on your device to sign in properly.",
         "fixedLabel": "I can sign in now",
         "notFixedLabel": "Still can't sign in"
       },
