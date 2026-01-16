@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#1a73e8">
+  <meta name="description" content="Chromebook self-service troubleshooting kiosk">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Chromezone Self-Service Kiosk</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💻</text></svg>">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app" role="main">
+    <!-- Header -->
+    <header class="header" role="banner">
+      <button id="btn-home" class="btn-home" aria-label="Back to Home" hidden>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <span>Home</span>
+      </button>
+      <div class="header-title">
+        <img src="https://aptg.co/NBXZ7x" alt="Somerville Public Schools" class="header-logo">
+        <div class="header-text">
+          <h1 id="district-name">Somerville Public Schools</h1>
+          <span class="header-subtitle">Self-Service Kiosk</span>
+        </div>
+      </div>
+      <button id="btn-diagnostics" class="btn-diagnostics" aria-label="View diagnostics">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="16" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+      </button>
+    </header>
+
+    <!-- Main Content Area -->
+    <main id="main-content" class="main-content">
+      <!-- Home Screen -->
+      <section id="screen-home" class="screen screen-home active" aria-labelledby="home-heading">
+        <h2 id="home-heading" class="screen-heading">What do you need help with?</h2>
+        <div class="tile-grid" role="list">
+          <button class="tile" data-flow="signin" role="listitem">
+            <div class="tile-icon" aria-hidden="true">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </div>
+            <span class="tile-label">Can't Sign In</span>
+            <span class="tile-desc">Password, account, or login issues</span>
+          </button>
+          
+          <button class="tile" data-flow="wifi" role="listitem">
+            <div class="tile-icon" aria-hidden="true">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
+                <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
+                <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+                <line x1="12" y1="20" x2="12.01" y2="20"></line>
+              </svg>
+            </div>
+            <span class="tile-label">Wi-Fi Issues</span>
+            <span class="tile-desc">Can't connect to the internet</span>
+          </button>
+          
+          <button class="tile tile-warning" data-flow="powerwash" role="listitem">
+            <div class="tile-icon" aria-hidden="true">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M23 4v6h-6"></path>
+                <path d="M1 20v-6h6"></path>
+                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+              </svg>
+            </div>
+            <span class="tile-label">Powerwash Device</span>
+            <span class="tile-desc">Factory reset (erases everything)</span>
+          </button>
+          
+          <button class="tile" data-flow="printing" role="listitem">
+            <div class="tile-icon" aria-hidden="true">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                <rect x="6" y="14" width="12" height="8"></rect>
+              </svg>
+            </div>
+            <span class="tile-label">Printing</span>
+          </button>
+          
+          <button class="tile" data-flow="slow" role="listitem">
+            <div class="tile-icon" aria-hidden="true">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+            <span class="tile-label">Slow Device</span>
+            <span class="tile-desc">Performance or storage issues</span>
+          </button>
+          
+          <button class="tile" data-flow="other" role="listitem">
+            <div class="tile-icon" aria-hidden="true">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+            </div>
+            <span class="tile-label">Other Issues</span>
+            <span class="tile-desc">Contact Tech Support</span>
+          </button>
+        </div>
+        
+        <!-- Loaner Button -->
+        <button class="loaner-button" data-flow="loaner">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+            <line x1="2" y1="20" x2="22" y2="20"></line>
+          </svg>
+          <span>I need a loaner Chromebook / Charger</span>
+        </button>
+      </section>
+
+      <!-- Flow Screen (dynamically populated) -->
+      <section id="screen-flow" class="screen screen-flow" aria-labelledby="flow-heading" hidden>
+        <div class="flow-header">
+          <h2 id="flow-heading" class="flow-title">Flow Title</h2>
+          <div id="flow-progress" class="flow-progress" role="progressbar" aria-valuemin="1" aria-valuemax="1" aria-valuenow="1">
+            <span class="progress-text">Step 1 of 1</span>
+            <div class="progress-bar">
+              <div class="progress-fill"></div>
+            </div>
+          </div>
+        </div>
+        
+        <div id="flow-content" class="flow-content">
+          <div id="step-instruction" class="step-instruction"></div>
+          
+          <details id="step-details" class="step-details">
+            <summary>More details</summary>
+            <div id="step-details-content" class="step-details-content"></div>
+          </details>
+          
+          <div id="step-warning" class="step-warning" hidden>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            <span id="step-warning-text"></span>
+          </div>
+          
+          <div id="step-requires-internet" class="step-requires-internet" hidden>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+            <span>This step requires internet access</span>
+          </div>
+        </div>
+        
+        <div class="flow-actions">
+          <button id="btn-fixed" class="btn btn-success">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            This fixed it
+          </button>
+          <button id="btn-not-fixed" class="btn btn-secondary">
+            Still not fixed
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
+        </div>
+        
+        <button id="btn-back-step" class="btn-back-step" hidden>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          Previous step
+        </button>
+      </section>
+
+      <!-- Escalation Screen -->
+      <section id="screen-escalation" class="screen screen-escalation" aria-labelledby="escalation-heading" hidden>
+        <h2 id="escalation-heading" class="screen-heading">Contact Tech Support</h2>
+        
+        <div class="escalation-content">
+          <p class="escalation-intro">We couldn't solve your issue automatically. Submit a tech ticket to get help:</p>
+          
+          <a href="https://airtable.com/appebVtuYEdmMqcn4/pagqIveB6XR6pqpEs/form" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-large btn-full-width">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+            Submit a Tech Ticket
+          </a>
+          
+          <div id="offline-notice" class="offline-notice" hidden>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <line x1="1" y1="1" x2="23" y2="23"></line>
+              <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path>
+              <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"></path>
+              <path d="M10.71 5.05A16 16 0 0 1 22.58 9"></path>
+              <path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"></path>
+              <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+              <line x1="12" y1="20" x2="12.01" y2="20"></line>
+            </svg>
+            <div>
+              <strong>You're offline</strong>
+              <p>Find a technician in person or try connecting to Wi-Fi first.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Diagnostics Screen -->
+      <section id="screen-diagnostics" class="screen screen-diagnostics" aria-labelledby="diagnostics-heading" hidden>
+        <h2 id="diagnostics-heading" class="screen-heading">Device Diagnostics</h2>
+        
+        <div class="diagnostics-grid">
+          <div class="diagnostic-item">
+            <span class="diagnostic-label">Connection Status</span>
+            <span id="diag-online" class="diagnostic-value">Checking...</span>
+          </div>
+          
+          <div class="diagnostic-item">
+            <span class="diagnostic-label">Current Date/Time</span>
+            <span id="diag-datetime" class="diagnostic-value">--</span>
+          </div>
+          
+          <div class="diagnostic-item">
+            <span class="diagnostic-label">Browser</span>
+            <span id="diag-browser" class="diagnostic-value">--</span>
+          </div>
+          
+          <div class="diagnostic-item">
+            <span class="diagnostic-label">Platform</span>
+            <span id="diag-platform" class="diagnostic-value">--</span>
+          </div>
+          
+          <div class="diagnostic-item">
+            <span class="diagnostic-label">Screen Size</span>
+            <span id="diag-screen" class="diagnostic-value">--</span>
+          </div>
+          
+          <div class="diagnostic-item">
+            <span class="diagnostic-label">Kiosk Version</span>
+            <span id="diag-version" class="diagnostic-value">1.0.0</span>
+          </div>
+        </div>
+        
+        <p class="diagnostics-note">This information can help technicians troubleshoot issues. No personal data is collected or stored.</p>
+      </section>
+
+      <!-- Success Screen -->
+      <section id="screen-success" class="screen screen-success" aria-labelledby="success-heading" hidden>
+        <div class="success-content">
+          <div class="success-icon" aria-hidden="true">
+            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+          </div>
+          <h2 id="success-heading">Great, glad that worked!</h2>
+          <p>Your Chromebook should be working now. If you have another issue, tap below.</p>
+          <button id="btn-success-home" class="btn btn-primary btn-large">Back to Home</button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Offline indicator -->
+    <div id="offline-banner" class="offline-banner" hidden role="alert">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <line x1="1" y1="1" x2="23" y2="23"></line>
+        <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path>
+        <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"></path>
+        <path d="M10.71 5.05A16 16 0 0 1 22.58 9"></path>
+        <path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"></path>
+        <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+        <line x1="12" y1="20" x2="12.01" y2="20"></line>
+      </svg>
+      <span>Offline Mode — Some features unavailable</span>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+{
+  "name": "Chromezone Self-Service Kiosk",
+  "short_name": "Chromezone",
+  "description": "Self-service troubleshooting kiosk for Chromebook issues",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f8f9fa",
+  "theme_color": "#1a73e8",
+  "scope": "/",
+  "lang": "en-US",
+  "categories": ["utilities", "education"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='96' fill='%231a73e8'/><path d='M256 120c-75 0-136 61-136 136s61 136 136 136 136-61 136-136-61-136-136-136zm0 240c-57 0-104-47-104-104s47-104 104-104 104 47 104 104-47 104-104 104z' fill='white'/><circle cx='256' cy='256' r='48' fill='white'/><path d='M376 136l-40 70M136 136l40 70M256 376v-80' stroke='white' stroke-width='24' stroke-linecap='round'/></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='36' fill='%231a73e8'/><path d='M96 44c-29 0-52 23-52 52s23 52 52 52 52-23 52-52-23-52-52-52zm0 88c-20 0-36-16-36-36s16-36 36-36 36 16 36 36-16 36-36 36z' fill='white'/><circle cx='96' cy='96' r='16' fill='white'/></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "related_applications": [],
+  "prefer_related_applications": false
+}

@@ -1,0 +1,23 @@
+{
+  "districtName": "Somerville Public Schools",
+  "supportInstructions": "**Need more help?**\n\nSubmit a tech ticket.",
+  "ticketingUrl": "https://airtable.com/appebVtuYEdmMqcn4/pagqIveB6XR6pqpEs/form",
+  "enabledFlows": [
+    "signin",
+    "wifi",
+    "powerwash",
+    "printing",
+    "slow",
+    "other"
+  ],
+  "features": {
+    "showDiagnostics": true,
+    "allowClipboardCopy": true
+  },
+  "branding": {
+    "primaryColor": "#1a73e8",
+    "accentColor": "#1e8e3e"
+  },
+  "version": "1.0.0",
+  "lastUpdated": "2025-01-15"
+}

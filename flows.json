@@ -1,0 +1,480 @@
+{
+  "signin": {
+    "id": "signin",
+    "title": "Can't Sign In",
+    "description": "Troubleshoot account and login issues",
+    "steps": [
+      {
+        "instruction": "Let's figure out what's preventing you from signing in.\n\n**What's happening when you try to sign in?**",
+        "type": "branch",
+        "options": [
+          {
+            "label": "Wrong password / \"password cannot be verified\"",
+            "gotoStep": 1
+          },
+          {
+            "label": "Something else",
+            "gotoStep": 8
+          }
+        ]
+      },
+      {
+        "instruction": "**Password Can't be Verified**\n\nFirst, Remove your account from your Chromebook.\n\n1. On the lock screen, click the small arrow next to your last name. \n2. As message will appear asking if you want to Remove the account. Click Remove account. Click again to confirm.\n3. In the bottom left corner of your screen, click Shut Down to shut down your Chromebook.",
+        "details": "Once your Chromebook is shut down, press the power button again to turn it back on, then attempt to sign in to your Chromebook again.",
+        "fixedLabel": "I can sign in now",
+        "notFixedLabel": "Still can't sign in"
+      },
+      {
+        "instruction": "**Reset Your Password**\n\nYou'll need to submit a tech ticket to reset your password.\n\nScan the QR code below or click the link to submit a ticket:",
+        "ticketUrl": "https://airtable.com/appebVtuYEdmMqcn4/pagqIveB6XR6pqpEs/form",
+        "requiresInternet": true,
+        "fixedLabel": "Help me submit a ticket to change my password",
+        "notFixedLabel": "I need more help"
+      },
+      {
+        "instruction": "**Check Date and Time**\n\nIncorrect date/time can cause sign-in failures.\n\n1. Look at the time shown in the bottom-right corner of the sign-in screen\n2. If the time or date is wrong, click on it\n3. Select **Set automatically** if available\n\nIf you can't change the time, restart the Chromebook and try again.",
+        "details": "Chromebooks need accurate time to securely connect to Google. If the battery was completely drained or the device was off for a long time, the clock might be wrong.",
+        "fixedLabel": "Time is correct now",
+        "notFixedLabel": "Time is correct but still can't sign in"
+      },
+      {
+        "instruction": "**Account Not Found**\n\nIf you're seeing \"Couldn't find your Google Account\":\n\n1. Double-check your email address for typos\n2. Make sure you're using your **full school email** (e.g., firstname.lastname@school.edu)\n3. Check if your school uses a different domain (ask your teacher)\n\n**Are you a new student?** Your account may not be set up yet. Check with your teacher or school office.",
+        "details": "New students sometimes need to wait 24-48 hours after enrollment for their account to be created. Transfer students may have a new email address.",
+        "fixedLabel": "Found my account",
+        "notFixedLabel": "Account still not found"
+      },
+      {
+        "instruction": "**Contact the Tech Department**\n\nYour account may need to be:\n- Created (new students)\n- Reactivated (returning students)\n- Fixed by IT (technical issues)\n\n**Go to your school's main office or ChromeZone** and let them know you can't find your account.\n\nBring your student ID if you have one.",
+        "fixedLabel": "I'll contact my school",
+        "notFixedLabel": "I need different help"
+      },
+      {
+        "instruction": "**Device locked or account suspended**\n\nIf you see messages like:\n- \"This device has been locked\"\n- \"Your account has been suspended\"\n- \"Contact your administrator\"\n\n**This can only be fixed by your school.** Common reasons:\n- Did not return loaner devices or chargers\n- Policy violation\n- Account needs to be re-activated\n\nVisit the main office or Chrome Zone.",
+        "warning": "Only school administrators can unlock suspended accounts.",
+        "fixedLabel": "I'll contact my school",
+        "notFixedLabel": "It's a different message"
+      },
+      {
+        "instruction": "**Check Your Network Connection**\n\nSign-in requires internet access. Let's verify your connection:\n\n1. Look at the network icon in the bottom-right corner\n2. Click on it and make sure you're connected to Wi-Fi\n3. If you see \"No internet\" try forgetting and rejoining the network\n\nNeed help with Wi-Fi? Select \"I have a Wi-Fi issue\" below.",
+        "type": "branch",
+        "options": [
+          {
+            "label": "I have a Wi-Fi issue",
+            "gotoFlow": "wifi"
+          },
+          {
+            "label": "Wi-Fi is working, still can't sign in",
+            "gotoStep": 8
+          }
+        ]
+      },
+      {
+        "instruction": "**Try a Hard Refresh**\n\nSometimes the sign-in page gets stuck. Try this:\n\n1. Press `Ctrl` + `Shift` + `R` to hard refresh\n2. Or close and reopen the lid\n3. If that doesn't work, hold the **Power button** for 10 seconds to force restart\n\nAfter restart, try signing in again.",
+        "fixedLabel": "That worked!",
+        "notFixedLabel": "Still having trouble"
+      }
+    ]
+  },
+
+  "account-removal": {
+    "id": "account-removal",
+    "title": "Remove Google Account",
+    "description": "Remove an account from this Chromebook",
+    "steps": [
+      {
+        "instruction": "**Before You Remove an Account**\n\nRemoving an account will:\n- Sign you out of that account on this device\n- NOT delete the account itself (you can still sign in elsewhere)\n\n**Are you on the lock page that shows just your full name and a place to enter your password?**",
+        "type": "branch",
+        "options": [
+          {
+            "label": "I am on the lock page",
+            "gotoStep": 1
+          },
+          {
+            "label": "I am still signed in to my chromebook",
+            "gotoStep": 2
+          }
+        ]
+      },
+      {
+        "instruction": "**Removing account from Lock Screen**\n\nOn school issued Chromebooks, you must make sure you are on the lock screen before removing account.\n\n**Try this:**\n1. From the sign-in screen, click on the account you want to remove\n2. Look for the small **down arrow** next to the account name\n3. If you see **\"Remove this account\"** — click it\n4. If you don't see that option, check the bottom left corner for a sign out button. Click that, then retry.",
+        "fixedLabel": "Account removed",
+        "notFixedLabel": "Can't remove it"
+      },
+      {
+        "instruction": "**Common issues**\n\nMake sure you are on the Lock Screen\n\n**Options:**\n1. The Lock Screen has your first and last name and a place to enter your password.\n2. If you're on the lock screen, but do not see an arrow next to your last name, check for a sign out button in the bottom left corner.\n3. If you see that sign out button in the bottom left corner, click it and try again.\n\n Once complete, click Shut Down in the bottom left corner. Press the power button on your chromebook to turn it back on, and attempt to sign in again.",
+        "notFixedLabel": "I need to try something else"
+      },
+      {
+        "instruction": "**I removed the account but I still can't sign in**\n\nIf you still can't sign in:\n\n1. **You may need to do a Powerwash\n2. **Try shutting down again** — Shutting down your chromebook fully, then pressing power again and attempting to sign in sometimes helps.\n\nDo you want to do a Powerwash to completely reset the device?",
+        "type": "branch",
+        "warning": "Powerwash resets your chromebook completely and you will need Tech Support to get you back on the School Wifi.",
+        "options": [
+          {
+            "label": "Yes, show me how to Powerwash",
+            "gotoFlow": "powerwash"
+          },
+          {
+            "label": "No, I need a different solution",
+            "escalate": true
+          }
+        ]
+      }
+    ]
+  },
+
+  "wifi": {
+    "id": "wifi",
+    "title": "Wi-Fi Issues",
+    "description": "Troubleshoot internet connectivity",
+    "steps": [
+      {
+        "instruction": "**Let's fix your Wi-Fi connection.**\n\nFirst, what's happening?",
+        "type": "branch",
+        "options": [
+          {
+            "label": "Can't connect to Wi-Fi at all",
+            "gotoStep": 1
+          },
+          {
+            "label": "Connected but no internet",
+            "gotoStep": 5
+          },
+          {
+            "label": "Wi-Fi keeps disconnecting",
+            "gotoStep": 8
+          },
+          {
+            "label": "Can't see any networks",
+            "gotoStep": 10
+          },
+          {
+            "label": "Works on my phone but not Chromebook",
+            "gotoStep": 12
+          }
+        ]
+      },
+      {
+        "instruction": "**Toggle Wi-Fi Off and On**\n\n1. Click the **time** in the bottom-right corner\n2. Click the **Wi-Fi icon**\n3. Turn Wi-Fi **OFF**\n4. Wait 10 seconds\n5. Turn Wi-Fi **ON**\n6. Select your network and try connecting",
+        "details": "This clears temporary connection issues and forces the Chromebook to scan for networks again.",
+        "fixedLabel": "Connected now!",
+        "notFixedLabel": "Still can't connect"
+      },
+      {
+        "instruction": "**Check the Password**\n\nMake sure you're entering the correct Wi-Fi password:\n\n1. Check for `Caps Lock` — passwords are case-sensitive\n2. School Wi-Fi often uses your **school login** (username and password)\n3. Home Wi-Fi password might be on your router or from your internet provider\n\n**School network?** Ask your teacher for the correct network information.",
+        "fixedLabel": "Password was wrong, fixed now!",
+        "notFixedLabel": "Password is correct"
+      },
+      {
+        "instruction": "**Restart Your Chromebook**\n\nA restart can fix many connection issues:\n\n1. Click the **time** in the bottom-right corner\n2. Click the **Power icon**\n3. Select **\"Restart\"**\n4. After restart, try connecting to Wi-Fi again\n\nIf it still won't connect, you may need tech support.",
+        "fixedLabel": "Working after restart!",
+        "notFixedLabel": "Still can't connect"
+      },
+      {
+        "instruction": "**Connected But No Internet**\n\nYou're connected to Wi-Fi but can't browse. This is often a sign-in page (captive portal) issue.\n\n1. Open **Chrome** and go to **http://google.com**\n2. You should be redirected to a sign-in page\n3. Sign in with your school credentials if prompted\n\n**Don't see a sign-in page?** Try a different website like http://example.com",
+        "details": "Many school and public networks require you to sign in through a web page before you can access the internet. This is called a \"captive portal.\"",
+        "fixedLabel": "Signed in, internet works!",
+        "notFixedLabel": "No sign-in page appeared"
+      },
+      {
+        "instruction": "**Check Date and Time**\n\nIncorrect date/time can break internet connectivity.\n\n1. Click the **time** in the bottom-right corner\n2. Check if the date and time are correct\n3. Click **Settings** (gear icon)\n4. Go to **Advanced > Date and time**\n5. Make sure **\"Set time automatically\"** is ON\n\nIf the time is way off (wrong year), try restarting the Chromebook.",
+        "fixedLabel": "Time fixed, internet works!",
+        "notFixedLabel": "Time is correct, still no internet"
+      },
+      {
+        "instruction": "**Network Issue**\n\nThe network might be having problems.",
+        "details": "DNS (Domain Name System) translates website names into addresses. Using Google's DNS can bypass some network configuration issues.",
+        "fixedLabel": "Internet works now!",
+        "notFixedLabel": "Still no internet"
+      },
+      {
+        "instruction": "**Wi-Fi Keeps Disconnecting**\n\nIf your connection keeps dropping:\n\n1. Move closer to the Wi-Fi router/access point\n2. Check if others nearby are having the same issue (could be network problem)\n3. Try forgetting the network and reconnecting (see previous steps)\n\n**Is this happening only in certain locations?** Some areas may have weak Wi-Fi coverage.",
+        "details": "Chromebooks may disconnect from weak signals. Walls, floors, and distance all affect Wi-Fi strength.",
+        "fixedLabel": "Connection is stable now",
+        "notFixedLabel": "Keeps disconnecting"
+      },
+      {
+        "instruction": "**Hardware or Network Problem**\n\nIf Wi-Fi keeps disconnecting despite troubleshooting:\n\n1. Try connecting to a **different network** (like a phone hotspot) to test if Wi-Fi hardware works\n2. If it works on other networks, the issue is with your school/home network\n3. If it fails on all networks, there may be a hardware issue\n\n**For hardware issues,** you'll need to contact your school's IT department.",
+        "fixedLabel": "Works on another network",
+        "notFixedLabel": "Doesn't work anywhere"
+      },
+      {
+        "instruction": "**Can't See Any Networks**\n\nIf no Wi-Fi networks appear:\n\n1. Make sure Wi-Fi is **ON** (check the quick settings panel)\n2. Check if **Airplane mode** is OFF\n3. Look for a physical Wi-Fi switch on the side of the Chromebook (rare, but some models have one)\n\nToggle Wi-Fi off and on to force a network scan.",
+        "fixedLabel": "I can see networks now",
+        "notFixedLabel": "Still no networks visible"
+      },
+      {
+        "instruction": "**Airplane Mode Check**\n\n1. Click the **time** in the bottom-right corner\n2. Look for an **airplane icon** — if it's highlighted, Airplane Mode is ON\n3. Click it to turn Airplane Mode **OFF**\n4. Wi-Fi should now scan for networks\n\nIf Airplane Mode is already off and you still see no networks, restart the Chromebook.",
+        "fixedLabel": "Airplane mode was on, fixed!",
+        "notFixedLabel": "Airplane mode is off"
+      },
+      {
+        "instruction": "**Works on Phone But Not Chromebook**\n\nIf your phone connects but the Chromebook doesn't, try these Chromebook-specific fixes:\n\n1. **Forget and rejoin** the network on the Chromebook\n2. **Check the date/time** — Chromebooks are sensitive to incorrect time\n3. **Try signing in again** — some networks need re-authentication\n\nYour phone might be using saved credentials that the Chromebook doesn't have.",
+        "fixedLabel": "Chromebook connects now!",
+        "notFixedLabel": "Chromebook still won't connect"
+      },
+      {
+        "instruction": "**Network Restrictions**\n\nSome networks have restrictions that affect Chromebooks:\n\n1. **MAC address filtering** — Ask Tech Support if your Chromebook is allowed on the network\n2. **Device limits** — Some networks limit how many devices can connect\n3. **Chromebook-specific blocks** — Rarely, networks may block Chrome OS devices\n\n**Ask your IT department** if Chromebooks are supported on this network.",
+        "fixedLabel": "Tech Support helped me connect",
+        "notFixedLabel": "Need more help"
+      }
+    ]
+  },
+
+  "powerwash": {
+    "id": "powerwash",
+    "title": "Powerwash Device",
+    "description": "Factory reset your Chromebook",
+    "steps": [
+      {
+        "instruction": "**What is Powerwash?**\n\nPowerwash is a factory reset that:\n\n✓ Erases local data, accounts, and settings\n✓ Returns the Chromebook to like-new condition\n✓ Does NOT delete your Google account or data\n✓ Does NOT remove enterprise/school management\n\n**Are you sure you want to Powerwash?**",
+        "type": "branch",
+        "warning": "Powerwash permanently erases all local files. Make sure anything important is backed up to Google Drive.",
+        "options": [
+          {
+            "label": "Yes, I want to Powerwash",
+            "gotoStep": 1
+          },
+          {
+            "label": "No, I want to try something else first",
+            "gotoFlow": "slow"
+          },
+          {
+            "label": "I just want to remove an account",
+            "gotoFlow": "account-removal"
+          }
+        ]
+      },
+      {
+        "instruction": "**Before You Powerwash — Checklist**\n\nPlease confirm:\n\n☐ I have backed up any important files to Google Drive\n☐ I know my Google account password (to sign back in after)\n☐ I'm prepared to set up the Chromebook again from scratch\n\n**School Chromebook?** Check with your teacher first — there may be school policies about resetting devices.",
+        "warning": "This cannot be undone. If you powerwash at school, you will not have internet access until Tech Support puts your Chromebook back on the network.",
+        "fixedLabel": "I'm ready to Powerwash",
+        "notFixedLabel": "I don't want to proceed."
+      },
+      {
+        "instruction": "**How to Powerwash**\n\n**Method 1 — From Settings (if you can sign in):**\n1. Sign into the Chromebook\n2. Click the **time** in the bottom-right\n3. Click **Settings** (gear icon)\n4. Click **Advanced** at the bottom\n5. Click **Reset settings**\n6. Click **Powerwash**, then **Restart**\n7. In the box that appears, click **Powerwash** → **Continue**",
+        "details": "The device will restart and guide you through the reset process. This takes about 5-10 minutes.",
+        "fixedLabel": "Powerwash started",
+        "notFixedLabel": "Can't access Settings"
+      },
+      {
+        "instruction": "**Powerwash from Sign-in Screen**\n\nIf you can't sign in, use this keyboard shortcut:\n\n1. On the sign-in screen, press `Ctrl` + `Alt` + `Shift` + `R`\n2. A dialog box will appear — click **Restart**\n3. After restart, click **Powerwash**\n4. Click **Continue** to confirm\n\n**Note:** On managed devices, this shortcut may be disabled.",
+        "warning": "This will erase everything on the device.",
+        "fixedLabel": "Powerwash worked!",
+        "notFixedLabel": "Shortcut didn't work"
+      },
+      {
+        "instruction": "**Powerwash is finished but now I have no internet.**\n\nIf you performed Powerwash in school, your device will no longer be connected to school wifi.\n\n**Contact your school's Technology Department** for help.",
+        "warning": "Do not attempt to bypass enterprise management — this may violate school policy.",
+        "fixedLabel": "I'll contact Tech Support",
+        "notFixedLabel": "I need another option"
+      }
+    ]
+  },
+
+  "printing": {
+    "id": "printing",
+    "title": "Printing Issues",
+    "description": "Troubleshoot printing problems",
+    "steps": [
+      {
+        "instruction": "**What do you need to do?**",
+        "type": "branch",
+        "options": [
+          {
+            "label": "Print from my chromebook",
+            "gotoStep": 1
+          }
+        ]
+      },
+      {
+        "instruction": "**Printer Not Showing**\n\nStudent's\n- **cannot print from their chromebooks in school**, but can print from home if your printer is compatible.\n**To find printers:**\n1. Press `Ctrl` + `P` to open print dialog\n2. Click **\"See more...\"** or the printer dropdown.",
+        "details": "Staff Members can print from their Chromebooks by selecting the printer called Papercut.",
+        "fixedLabel": "Found a printer!",
+        "notFixedLabel": "Printer not listed"
+      },
+      {
+        "instruction": "**Student Printing**\n\nStudent's can visit the Media Center to print their documents on the media center desktops.\n\n1. Sign in to the desktop → **Beginning half of your email and google password**\n2. Sign in to **\"Google Chrome\" and bring up your document.**\n3. Click the Printer icon and select **Papercut**\n4. Login to the Media Center Printer with the same username and password you used to sign in to the desktop. You will see your document, and then click the green **Print** button.",
+        "requiresInternet": true,
+        "fixedLabel": "I was able to Print!",
+        "notFixedLabel": "I couldn't print"
+      },
+      {
+        "instruction": "**Try the PDF Workaround**\n\nIf you can't print directly, save as PDF and print from another device:\n\n1. Press `Ctrl` + `P` to open print dialog\n2. Change destination to **\"Save as PDF\"**\n3. Click **Save**\n4. Upload the PDF to Google Drive\n5. Print from a computer or device that can access the printer\n\nThis is a reliable backup method!",
+        "fixedLabel": "PDF workaround helped!",
+        "notFixedLabel": "This didn't work"
+      }
+    ]
+  },
+
+  "slow": {
+    "id": "slow",
+    "title": "Slow Device",
+    "description": "Speed up your Chromebook",
+    "steps": [
+      {
+        "instruction": "**Let's speed up your Chromebook!**\n\nMost Chromebook slowness is caused by:\n- Too many open tabs\n- Low storage space\n- Too many extensions\n- Needing a restart\n\nLet's check each one.",
+        "fixedLabel": "Just needed info",
+        "notFixedLabel": "Start troubleshooting"
+      },
+      {
+        "instruction": "**Close Extra Tabs**\n\nEach open tab uses memory. Try this:\n\n1. Look at how many tabs you have open (check all Chrome windows)\n2. Close tabs you're not actively using\n3. **Bookmark important pages** instead of leaving them open\n\n**Tip:** Right-click a tab and select \"Close other tabs\" to quickly close all but one.",
+        "details": "Chromebooks have limited RAM. With 4GB RAM (common on school devices), more than 8-10 tabs can cause slowness.",
+        "fixedLabel": "Closed tabs, it's faster!",
+        "notFixedLabel": "Still slow"
+      },
+      {
+        "instruction": "**Restart Your Chromebook**\n\nRestarting clears temporary memory and can fix many issues:\n\n1. Click the **time** in the bottom-right corner\n2. Click the **Power** icon\n3. Select **\"Restart\"**\n4. Wait for the Chromebook to restart completely\n\n**How long since your last restart?** Chromebooks should be restarted at least weekly.",
+        "details": "Unlike closing the lid (which only puts it to sleep), a full restart clears all temporary data from memory.",
+        "fixedLabel": "Faster after restart!",
+        "notFixedLabel": "Still slow after restart"
+      },
+      {
+        "instruction": "**Check Storage Space**\n\n1. Click the **time** → **Settings**\n2. Click **Device** on the left\n3. Click **Storage management**\n4. See how much space is used vs. available\n\n**If storage is almost full (>90%), your Chromebook will be slow.**\n\nChromebooks typically have 16-64GB of storage, which fills up quickly!",
+        "fixedLabel": "Storage is fine",
+        "notFixedLabel": "Storage is almost full"
+      },
+      {
+        "instruction": "**Free Up Storage Space**\n\nTo free up space:\n\n1. **Delete Downloads:** Open Files app → Downloads → Delete unneeded files\n2. **Clear browsing data:** `Ctrl` + `Shift` + `Delete` → Clear cached images/files\n3. **Move files to Drive:** Upload important files to Google Drive, then delete local copies\n4. **Check offline files:** In Google Drive settings, reduce offline file storage\n\n**Goal:** Keep at least 2-3GB free for the system to work smoothly.",
+        "details": "The Downloads folder often contains forgotten files. Linux apps and Android apps (if enabled) can also use significant space.",
+        "fixedLabel": "Freed up space, it's faster!",
+        "notFixedLabel": "Still slow or can't free space"
+      },
+      {
+        "instruction": "**Check Extensions**\n\nBrowser extensions can slow things down:\n\n1. Type `chrome://extensions` in the address bar\n2. Review your installed extensions\n3. **Disable** or **Remove** any you don't use\n4. Keep only essential extensions\n\n**School-installed extensions** can't be removed, but personal ones can.",
+        "details": "Some extensions run constantly in the background, using CPU and memory even when you're not actively using them.",
+        "fixedLabel": "Removed extensions, faster now!",
+        "notFixedLabel": "Still slow"
+      },
+      {
+        "instruction": "**Check for Chrome Updates**\n\n1. Click **⋮** (three dots) in Chrome's top-right corner\n2. Click **Help** → **About Google Chrome**\n3. Chrome will check for updates\n4. If an update is available, let it install and restart\n\nOutdated Chrome can cause performance issues.",
+        "requiresInternet": true,
+        "fixedLabel": "Updated, running better!",
+        "notFixedLabel": "Already up to date / still slow"
+      },
+      {
+        "instruction": "**Hardware Limitations**\n\nIf your Chromebook is still slow after all these steps, it may be:\n\n- **An older model** with limited specs\n- **Running demanding tasks** (video editing, many tabs)\n- **Having a hardware issue** (failing storage, etc.)\n\n**For school Chromebooks,** report the issue to Tech Support — they may be able to perform maintenance.",
+        "details": "Older Chromebooks (2017 and earlier) have 2-4GB RAM and may struggle with modern websites. This is a hardware limitation.",
+        "fixedLabel": "I'll contact Tech Support",
+        "notFixedLabel": "Try something else"
+      }
+    ]
+  },
+
+  "other": {
+    "id": "other",
+    "title": "Other Issues",
+    "description": "Issues not covered by other categories",
+    "steps": [
+      {
+        "instruction": "**Other Issues**\n\nWhat kind of issue are you experiencing?",
+        "type": "branch",
+        "options": [
+          {
+            "label": "Chromebook won't turn on",
+            "gotoStep": 1
+          },
+          {
+            "label": "Screen is black or flickering",
+            "gotoStep": 4
+          },
+          {
+            "label": "Keyboard or touchpad not working",
+            "gotoStep": 6
+          },
+          {
+            "label": "Audio/sound issues",
+            "gotoStep": 8
+          },
+          {
+            "label": "Something else entirely",
+            "escalate": true
+          }
+        ]
+      },
+      {
+        "instruction": "**Chromebook Won't Turn On**\n\nFirst, let's rule out a dead battery:\n\n1. **Plug in the charger** and wait 5 minutes\n2. Look for a **charging light** (usually near the charging port)\n3. Try pressing the **Power button** for 10 seconds\n\n**No charging light?** Try a different charger or outlet if available.",
+        "details": "Chromebooks with completely dead batteries may need 10-15 minutes of charging before they can turn on.",
+        "fixedLabel": "It turned on!",
+        "notFixedLabel": "Still won't turn on"
+      },
+      {
+        "instruction": "**Hard Reset**\n\nTry a hard reset (this won't delete any data):\n\n1. If plugged in, leave it plugged in\n2. Press and hold **Refresh** (↻) + **Power** at the same time\n3. Hold both keys for 10 seconds\n4. Release and wait a moment\n5. Press **Power** to turn it on\n\n**Refresh key** is the circular arrow in the top row of keys.",
+        "fixedLabel": "Hard reset worked!",
+        "notFixedLabel": "Still won't turn on"
+      },
+      {
+        "instruction": "**Possible Hardware Issue**\n\nIf your Chromebook still won't turn on after charging and hard reset, there may be a hardware problem:\n\n- **Battery failure**\n- **Charging port damage**\n- **Motherboard issue**\n\n**This requires professional repair.** Contact your school's IT department or the manufacturer.",
+        "warning": "Do not attempt to open or repair the Chromebook yourself — this may void the warranty and violate school policy.",
+        "fixedLabel": "I'll contact Tech Support",
+        "notFixedLabel": "Need more options"
+      },
+      {
+        "instruction": "**Black or Flickering Screen**\n\nIf the screen is black but the Chromebook seems on:\n\n1. **Increase brightness:** Press the brightness up key (☀️ with up arrow)\n2. **Check if it's in sleep mode:** Press any key or move the touchpad\n3. **Try hard reset:** Hold **Refresh** + **Power** for 10 seconds\n\n**Screen flickering?** This is often a hardware issue — report to IT.",
+        "fixedLabel": "Screen is working now!",
+        "notFixedLabel": "Screen still black/flickering"
+      },
+      {
+        "instruction": "**External Display Test**\n\nIf you have access to an external monitor:\n\n1. Connect the Chromebook to an external display (HDMI or USB-C)\n2. If the external display works but built-in screen doesn't, it's a screen hardware issue\n\n**No external display available?** Contact IT for testing.\n\n**Flickering screens** almost always require repair or replacement.",
+        "fixedLabel": "Found the issue",
+        "notFixedLabel": "Need Tech support"
+      },
+      {
+        "instruction": "**Keyboard or Touchpad Not Working**\n\nTry these steps:\n\n1. **Restart the Chromebook** (if you can — use touchscreen or external mouse)\n2. **Check for stuck keys** — look for debris under keys\n3. **Try external input** — connect a USB mouse or keyboard to test\n\n**Some keys not working?** Liquid damage or physical damage may be the cause.",
+        "fixedLabel": "Input is working now!",
+        "notFixedLabel": "Still not working"
+      },
+      {
+        "instruction": "**Input Hardware Issue**\n\nIf the keyboard or touchpad still doesn't work:\n\n- **Single keys not working** = Physical damage, needs repair\n- **Whole keyboard not working** = Possible cable or board issue\n- **Touchpad not responding** = Hardware or software issue\n\n**For school Chromebooks,** report this to IT for repair or replacement.\n\n**Note:** Liquid spills often damage keyboards but not immediately — symptoms can appear days later.",
+        "warning": "If liquid was spilled on the device, tell IT — they need to know for proper repair.",
+        "fixedLabel": "I'll contact Tech Support",
+        "notFixedLabel": "Need different help"
+      },
+      {
+        "instruction": "**Audio/Sound Issues**\n\nNo sound coming from your Chromebook?\n\n1. **Check volume:** Press the volume up key, look for the volume slider\n2. **Check mute:** Make sure you haven't muted audio\n3. **Headphones?** Sound goes to headphones if plugged in — try unplugging\n4. **Check website volume:** Some sites have their own volume controls",
+        "details": "The volume slider shows which output is selected. If headphones are plugged in, audio goes there even if nothing is connected to the other end.",
+        "fixedLabel": "Sound is working!",
+        "notFixedLabel": "Still no sound"
+      },
+      {
+        "instruction": "**Audio Output Settings**\n\n1. Click the **time** → then click the **volume slider**\n2. Click the **arrow** next to the volume slider\n3. Check which **output device** is selected\n4. Select **\"Internal speaker\"** if available\n\n**If headphone jack is damaged,** the Chromebook might think headphones are always connected. This requires repair.",
+        "fixedLabel": "Found the right output!",
+        "notFixedLabel": "Output is correct, still no sound"
+      }
+    ]
+  },
+
+  "loaner": {
+    "id": "loaner",
+    "title": "Loaner Equipment",
+    "description": "Borrow a Chromebook or charger",
+    "steps": [
+      {
+        "instruction": "**What do you need to borrow?**",
+        "type": "branch",
+        "options": [
+          {
+            "label": "I need a loaner charger",
+            "gotoStep": 1
+          },
+          {
+            "label": "I need a loaner Chromebook",
+            "gotoStep": 2
+          }
+        ]
+      },
+      {
+        "instruction": "**Loaner Charger**\n\n**Step 1:** Check to make sure there are loaner chargers available. You should see colored chargers close to this device. If you do not see any, then they are currently unavailable.\n\n**Step 2:** If there are chargers available, you must fill out the **Borrowed Charger Agreement** document located on the clipboard with your name and date, and agree to the terms.\n\n**Step 3:** Chargers must be returned when your device is fully charged.\n\n**Step 4:** When you return the charger, you must fill out the bottom section of the form to complete the return.",
+        "warning": "Failure to return the charger may result in loss of borrowing privileges.",
+        "fixedLabel": "Got it, I'll fill out the form",
+        "notFixedLabel": "No chargers available"
+      },
+      {
+        "instruction": "**Loaner Chromebook**\n\nTo borrow a loaner Chromebook, you must:\n\n1. **See a staff member** — Loaner Chromebooks cannot be self-issued\n2. **Submit a tech ticket** — This documents your request and helps us track devices\n\nClick below to submit a ticket for a loaner Chromebook.",
+        "ticketUrl": "https://airtable.com/appebVtuYEdmMqcn4/pagqIveB6XR6pqpEs/form",
+        "requiresInternet": true,
+        "fixedLabel": "Submit a ticket for loaner Chromebook",
+        "notFixedLabel": "I need something else"
+      }
+    ]
+  }
+}
