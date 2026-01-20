@@ -785,6 +785,13 @@ button:focus:not(:focus-visible) {
   max-width: 400px;
 }
 
+.success-countdown {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-lg);
+  margin-bottom: 0;
+}
+
 /* ========================================
    Offline Banner
    ======================================== */
