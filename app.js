@@ -184,6 +184,20 @@
   }
 
   function handleClick(e) {
+    // Check for ticket URL buttons first (in-step ticket links)
+    const ticketBtn = e.target.closest('[data-ticket-url]');
+    if (ticketBtn) {
+      openTicketAndGoHome(ticketBtn.dataset.ticketUrl);
+      return;
+    }
+    
+    // Check for submit ticket button on escalation screen
+    if (e.target.closest('#btn-submit-ticket')) {
+      const ticketUrl = state.config.ticketingUrl || 'https://airtable.com/appebVtuYEdmMqcn4/pagqIveB6XR6pqpEs/form';
+      openTicketAndGoHome(ticketUrl);
+      return;
+    }
+    
     const target = e.target.closest('[data-flow], #btn-home, #btn-diagnostics, #btn-fixed, #btn-not-fixed, #btn-back-step, #btn-success-home');
     
     if (!target) return;
@@ -213,6 +227,19 @@
         goToPreviousStep();
         break;
     }
+  }
+
+  function openTicketAndGoHome(url) {
+    if (!state.isOnline) {
+      alert('You need to be connected to the internet to submit a ticket. Please connect to Wi-Fi and try again, or visit Tech Support in person.');
+      return;
+    }
+    
+    // Open ticket form in new tab
+    window.open(url, '_blank', 'noopener,noreferrer');
+    
+    // Return to home screen
+    goHome();
   }
 
   function handleKeyboard(e) {
@@ -450,14 +477,14 @@
         <div class="ticket-qr-wrapper">
           <img src="${qrUrl}" alt="QR code to submit ticket" width="${size}" height="${size}" class="ticket-qr-image">
         </div>
-        <a href="${url}" target="_blank" rel="noopener noreferrer" class="ticket-link">
+        <button data-ticket-url="${url}" class="ticket-link">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
             <polyline points="15 3 21 3 21 9"></polyline>
             <line x1="10" y1="14" x2="21" y2="3"></line>
           </svg>
           Open Ticket Form
-        </a>
+        </button>
       `;
       container.hidden = false;
     } else {
@@ -474,7 +501,7 @@
           </svg>
           <div>
             <strong>You're offline</strong>
-            <p>Connect to Wi-Fi to submit a ticket, or visit the ChromeZone in person.</p>
+            <p>Connect to Wi-Fi to submit a ticket, or visit Tech Support in person.</p>
           </div>
         </div>
       `;
@@ -529,15 +556,9 @@
     const flow = state.currentFlow;
     const step = flow.steps[state.currentStepIndex];
     
-    // If step has a ticket URL, open it instead of showing success
+    // If step has a ticket URL, open it and go home
     if (step && step.ticketUrl) {
-      if (state.isOnline) {
-        window.open(step.ticketUrl, '_blank', 'noopener,noreferrer');
-        // Still show success after opening
-        showScreen('success');
-      } else {
-        alert('You need to be connected to the internet to submit a ticket. Please connect to Wi-Fi and try again, or visit the ChromeZone in person.');
-      }
+      openTicketAndGoHome(step.ticketUrl);
       return;
     }
     
