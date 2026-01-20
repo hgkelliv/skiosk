@@ -212,6 +212,37 @@ button:focus:not(:focus-visible) {
 }
 
 /* ========================================
+   Home Screen - Welcome Banner
+   ======================================== */
+.welcome-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  max-width: 700px;
+  margin: 0 auto var(--space-xl);
+  padding: var(--space-lg);
+  background-color: rgba(26, 115, 232, 0.08);
+  border: 1px solid rgba(26, 115, 232, 0.2);
+  border-radius: var(--border-radius-lg);
+}
+
+.welcome-wave {
+  font-size: 1.75rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.welcome-text {
+  font-size: var(--font-size-base);
+  line-height: 1.6;
+  color: var(--color-text);
+}
+
+.welcome-text strong {
+  color: var(--color-primary-dark);
+}
+
+/* ========================================
    Home Screen - Tile Grid
    ======================================== */
 .tile-grid {
@@ -515,12 +546,14 @@ button:focus:not(:focus-visible) {
   align-items: center;
   gap: var(--space-sm);
   padding: var(--space-md) var(--space-lg);
+  font-family: inherit;
   font-size: var(--font-size-base);
   font-weight: 500;
   color: var(--color-surface);
   background-color: var(--color-primary);
+  border: none;
   border-radius: var(--border-radius);
-  text-decoration: none;
+  cursor: pointer;
   transition: background-color var(--transition-fast);
 }
 
