@@ -43,6 +43,12 @@
     <main id="main-content" class="main-content">
       <!-- Home Screen -->
       <section id="screen-home" class="screen screen-home active" aria-labelledby="home-heading">
+        <div class="welcome-banner">
+          <span class="welcome-wave" aria-hidden="true">👋</span>
+          <div class="welcome-text">
+            <strong>Welcome!</strong> This kiosk helps you troubleshoot Chromebook problems on your own. Tap an option below that matches your issue, then follow the steps.
+          </div>
+        </div>
         <h2 id="home-heading" class="screen-heading">What do you need help with?</h2>
         <div class="tile-grid" role="list">
           <button class="tile" data-flow="signin" role="listitem">
@@ -197,14 +203,14 @@
         <div class="escalation-content">
           <p class="escalation-intro">We couldn't solve your issue automatically. Submit a tech ticket to get help:</p>
           
-          <a href="https://airtable.com/appebVtuYEdmMqcn4/pagqIveB6XR6pqpEs/form" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-large btn-full-width">
+          <button id="btn-submit-ticket" class="btn btn-primary btn-large btn-full-width">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
               <polyline points="15 3 21 3 21 9"></polyline>
               <line x1="10" y1="14" x2="21" y2="3"></line>
             </svg>
             Submit a Tech Ticket
-          </a>
+          </button>
           
           <div id="offline-notice" class="offline-notice" hidden>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
