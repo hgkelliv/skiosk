@@ -34,8 +34,14 @@
     flow: {},
     escalation: {},
     diagnostics: {},
+    success: {},
     offlineBanner: null
   };
+
+  // Auto-redirect timer for success screen
+  let successTimer = null;
+  let countdownInterval = null;
+  const SUCCESS_TIMEOUT = 30; // seconds
 
   // ========================================
   // Initialization
@@ -91,6 +97,10 @@
     
     // Escalation
     dom.escalation.offlineNotice = document.getElementById('offline-notice');
+    
+    // Success screen countdown
+    dom.success.countdown = document.getElementById('success-countdown');
+    dom.success.seconds = document.getElementById('countdown-seconds');
     
     // Diagnostics
     dom.diagnostics.online = document.getElementById('diag-online');
@@ -251,6 +261,9 @@
       screen.classList.remove('active');
     });
     
+    // Clear any existing countdown when leaving success screen
+    clearSuccessCountdown();
+    
     // Show requested screen
     const screen = dom.screens[screenName];
     if (screen) {
@@ -263,6 +276,11 @@
         heading.setAttribute('tabindex', '-1');
         heading.focus();
       }
+      
+      // Start countdown if showing success screen
+      if (screenName === 'success') {
+        startSuccessCountdown();
+      }
     }
     
     // Update header home button visibility
@@ -273,10 +291,43 @@
   }
 
   function goHome() {
+    clearSuccessCountdown();
     state.currentFlow = null;
     state.currentStepIndex = 0;
     state.stepHistory = [];
     showScreen('home');
+  }
+
+  // ========================================
+  // Success Screen Countdown
+  // ========================================
+  function startSuccessCountdown() {
+    let secondsLeft = SUCCESS_TIMEOUT;
+    
+    // Update display
+    dom.success.seconds.textContent = secondsLeft;
+    
+    // Start countdown interval
+    countdownInterval = setInterval(() => {
+      secondsLeft--;
+      dom.success.seconds.textContent = secondsLeft;
+      
+      if (secondsLeft <= 0) {
+        clearSuccessCountdown();
+        goHome();
+      }
+    }, 1000);
+  }
+
+  function clearSuccessCountdown() {
+    if (countdownInterval) {
+      clearInterval(countdownInterval);
+      countdownInterval = null;
+    }
+    if (successTimer) {
+      clearTimeout(successTimer);
+      successTimer = null;
+    }
   }
 
   // ========================================
