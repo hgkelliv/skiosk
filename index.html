@@ -123,12 +123,23 @@
         </div>
         
         <!-- Loaner Button -->
-        <button class="loaner-button" data-flow="loaner">
+        <button class="loaner-button" id="btn-loaner">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
             <line x1="2" y1="20" x2="22" y2="20"></line>
           </svg>
-          <span>I need a loaner Chromebook / Charger</span>
+          <span>I need a loaner Chromebook</span>
+        </button>
+        
+        <!-- Submit Ticket Button -->
+        <button class="ticket-button" id="btn-home-ticket">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="12" y1="18" x2="12" y2="12"></line>
+            <line x1="9" y1="15" x2="15" y2="15"></line>
+          </svg>
+          <span>Submit a Tech Ticket</span>
         </button>
       </section>
 
@@ -267,6 +278,126 @@
         </div>
         
         <p class="diagnostics-note">This information can help technicians troubleshoot issues. No personal data is collected or stored.</p>
+      </section>
+
+      <!-- Loaner Menu Screen -->
+      <section id="screen-loaner-menu" class="screen screen-loaner" aria-labelledby="loaner-menu-heading" hidden>
+        <h2 id="loaner-menu-heading" class="screen-heading">Loaner Chromebooks</h2>
+        
+        <div class="loaner-status" id="loaner-status">
+          <div class="loaner-status-loading">Checking availability...</div>
+        </div>
+        
+        <div class="loaner-menu-options">
+          <button id="btn-loaner-checkout" class="btn btn-success btn-large btn-block">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+              <line x1="2" y1="20" x2="22" y2="20"></line>
+            </svg>
+            Borrow a Chromebook
+          </button>
+          
+          <button id="btn-loaner-return" class="btn btn-primary btn-large btn-block">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <polyline points="9 11 12 14 22 4"></polyline>
+              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+            </svg>
+            Return a Chromebook
+          </button>
+        </div>
+        
+        <div id="loaner-offline-notice" class="offline-notice" hidden>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <line x1="1" y1="1" x2="23" y2="23"></line>
+            <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path>
+            <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"></path>
+            <path d="M10.71 5.05A16 16 0 0 1 22.58 9"></path>
+            <path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"></path>
+            <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+            <line x1="12" y1="20" x2="12.01" y2="20"></line>
+          </svg>
+          <div>
+            <strong>You're offline</strong>
+            <p>The loaner system requires an internet connection. Please connect to Wi-Fi or see a staff member.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Loaner Checkout Screen -->
+      <section id="screen-loaner-checkout" class="screen screen-loaner" aria-labelledby="loaner-checkout-heading" hidden>
+        <h2 id="loaner-checkout-heading" class="screen-heading">Borrow a Chromebook</h2>
+        
+        <div class="loaner-form-container">
+          <p class="loaner-form-intro">Enter your information to borrow a Chromebook. You must return it by the end of the day.</p>
+          
+          <div class="loaner-form">
+            <label class="form-field">
+              <span class="form-label">Your Full Name <span class="required">*</span></span>
+              <input type="text" id="checkout-name" class="form-input" placeholder="e.g., Maria Santos" maxlength="100" required>
+            </label>
+            
+            <label class="form-field">
+              <span class="form-label">Student ID <span class="required">*</span></span>
+              <input type="text" id="checkout-student-id" class="form-input" placeholder="e.g., 12345" maxlength="20" required>
+            </label>
+            
+            <button id="btn-checkout-submit" class="btn btn-success btn-large btn-block">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              Check Out Chromebook
+            </button>
+            
+            <button id="btn-checkout-cancel" class="btn btn-secondary btn-block">Cancel</button>
+          </div>
+          
+          <div id="checkout-error" class="loaner-error" hidden></div>
+        </div>
+      </section>
+
+      <!-- Loaner Return Screen -->
+      <section id="screen-loaner-return" class="screen screen-loaner" aria-labelledby="loaner-return-heading" hidden>
+        <h2 id="loaner-return-heading" class="screen-heading">Return a Chromebook</h2>
+        
+        <div class="loaner-form-container">
+          <p class="loaner-form-intro">Enter the asset tag number found on the Chromebook to return it.</p>
+          
+          <div class="loaner-form">
+            <label class="form-field">
+              <span class="form-label">Asset Tag Number <span class="required">*</span></span>
+              <input type="text" id="return-asset-tag" class="form-input" placeholder="e.g., 15432" maxlength="20" required>
+              <span class="form-hint">Look for a sticker on the Chromebook with a number</span>
+            </label>
+            
+            <button id="btn-return-submit" class="btn btn-primary btn-large btn-block">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              Return Chromebook
+            </button>
+            
+            <button id="btn-return-cancel" class="btn btn-secondary btn-block">Cancel</button>
+          </div>
+          
+          <div id="return-error" class="loaner-error" hidden></div>
+        </div>
+      </section>
+
+      <!-- Loaner Success Screen -->
+      <section id="screen-loaner-success" class="screen screen-loaner" aria-labelledby="loaner-success-heading" hidden>
+        <div class="loaner-success-content">
+          <div class="success-icon" aria-hidden="true">
+            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+          </div>
+          <h2 id="loaner-success-heading">Success!</h2>
+          <p id="loaner-success-message">Your request has been processed.</p>
+          <div id="loaner-success-details" class="loaner-success-details"></div>
+          <button id="btn-loaner-success-home" class="btn btn-primary btn-large">Back to Home</button>
+          <p id="loaner-success-countdown" class="success-countdown">Returning to home in <span id="loaner-countdown-seconds">15</span> seconds...</p>
+        </div>
       </section>
 
       <!-- Success Screen -->
