@@ -13,6 +13,13 @@
   'use strict';
 
   // ========================================
+  // Configuration
+  // ========================================
+  
+  // IMPORTANT: Replace this URL with your Google Apps Script Web App URL
+  const LOANER_API_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+  
+  // ========================================
   // State Management (minimal, local only)
   // ========================================
   const state = {
@@ -21,7 +28,8 @@
     currentFlow: null,
     currentStepIndex: 0,
     stepHistory: [],
-    isOnline: navigator.onLine
+    isOnline: navigator.onLine,
+    loanerStatus: null
   };
 
   // ========================================
@@ -35,6 +43,7 @@
     escalation: {},
     diagnostics: {},
     success: {},
+    loaner: {},
     offlineBanner: null
   };
 
@@ -42,6 +51,7 @@
   let successTimer = null;
   let countdownInterval = null;
   const SUCCESS_TIMEOUT = 30; // seconds
+  const LOANER_SUCCESS_TIMEOUT = 15; // seconds for loaner success
 
   // ========================================
   // Initialization
@@ -74,6 +84,10 @@
     dom.screens.escalation = document.getElementById('screen-escalation');
     dom.screens.diagnostics = document.getElementById('screen-diagnostics');
     dom.screens.success = document.getElementById('screen-success');
+    dom.screens.loanerMenu = document.getElementById('screen-loaner-menu');
+    dom.screens.loanerCheckout = document.getElementById('screen-loaner-checkout');
+    dom.screens.loanerReturn = document.getElementById('screen-loaner-return');
+    dom.screens.loanerSuccess = document.getElementById('screen-loaner-success');
     
     // Header
     dom.header.districtName = document.getElementById('district-name');
@@ -101,6 +115,26 @@
     // Success screen countdown
     dom.success.countdown = document.getElementById('success-countdown');
     dom.success.seconds = document.getElementById('countdown-seconds');
+    
+    // Loaner screens
+    dom.loaner.status = document.getElementById('loaner-status');
+    dom.loaner.offlineNotice = document.getElementById('loaner-offline-notice');
+    dom.loaner.btnCheckout = document.getElementById('btn-loaner-checkout');
+    dom.loaner.btnReturn = document.getElementById('btn-loaner-return');
+    dom.loaner.checkoutName = document.getElementById('checkout-name');
+    dom.loaner.checkoutStudentId = document.getElementById('checkout-student-id');
+    dom.loaner.btnCheckoutSubmit = document.getElementById('btn-checkout-submit');
+    dom.loaner.btnCheckoutCancel = document.getElementById('btn-checkout-cancel');
+    dom.loaner.checkoutError = document.getElementById('checkout-error');
+    dom.loaner.returnAssetTag = document.getElementById('return-asset-tag');
+    dom.loaner.btnReturnSubmit = document.getElementById('btn-return-submit');
+    dom.loaner.btnReturnCancel = document.getElementById('btn-return-cancel');
+    dom.loaner.returnError = document.getElementById('return-error');
+    dom.loaner.successMessage = document.getElementById('loaner-success-message');
+    dom.loaner.successDetails = document.getElementById('loaner-success-details');
+    dom.loaner.btnSuccessHome = document.getElementById('btn-loaner-success-home');
+    dom.loaner.successCountdown = document.getElementById('loaner-success-countdown');
+    dom.loaner.countdownSeconds = document.getElementById('loaner-countdown-seconds');
     
     // Diagnostics
     dom.diagnostics.online = document.getElementById('diag-online');
@@ -198,6 +232,47 @@
       return;
     }
     
+    // Loaner button handlers
+    if (e.target.closest('#btn-loaner')) {
+      showLoanerMenu();
+      return;
+    }
+    if (e.target.closest('#btn-loaner-checkout')) {
+      showLoanerCheckout();
+      return;
+    }
+    if (e.target.closest('#btn-loaner-return')) {
+      showLoanerReturn();
+      return;
+    }
+    if (e.target.closest('#btn-checkout-submit')) {
+      handleCheckoutSubmit();
+      return;
+    }
+    if (e.target.closest('#btn-checkout-cancel')) {
+      showLoanerMenu();
+      return;
+    }
+    if (e.target.closest('#btn-return-submit')) {
+      handleReturnSubmit();
+      return;
+    }
+    if (e.target.closest('#btn-return-cancel')) {
+      showLoanerMenu();
+      return;
+    }
+    if (e.target.closest('#btn-loaner-success-home')) {
+      goHome();
+      return;
+    }
+    
+    // Home screen ticket button
+    if (e.target.closest('#btn-home-ticket')) {
+      const ticketUrl = state.config.ticketingUrl || 'https://airtable.com/appebVtuYEdmMqcn4/pagqIveB6XR6pqpEs/form';
+      openTicketAndGoHome(ticketUrl);
+      return;
+    }
+    
     const target = e.target.closest('[data-flow], #btn-home, #btn-diagnostics, #btn-fixed, #btn-not-fixed, #btn-back-step, #btn-success-home');
     
     if (!target) return;
@@ -284,12 +359,15 @@
   function showScreen(screenName) {
     // Hide all screens
     Object.values(dom.screens).forEach(screen => {
-      screen.hidden = true;
-      screen.classList.remove('active');
+      if (screen) {
+        screen.hidden = true;
+        screen.classList.remove('active');
+      }
     });
     
-    // Clear any existing countdown when leaving success screen
+    // Clear any existing countdowns when navigating
     clearSuccessCountdown();
+    clearLoanerCountdown();
     
     // Show requested screen
     const screen = dom.screens[screenName];
@@ -679,6 +757,258 @@
     }
     
     return text;
+  }
+
+  // ========================================
+  // Loaner System Functions
+  // ========================================
+  
+  async function showLoanerMenu() {
+    showScreen('loanerMenu');
+    
+    // Check online status
+    if (!state.isOnline) {
+      dom.loaner.status.innerHTML = '<div class="loaner-status-unavailable">Offline - Cannot access loaner system</div>';
+      dom.loaner.offlineNotice.hidden = false;
+      dom.loaner.btnCheckout.disabled = true;
+      dom.loaner.btnReturn.disabled = true;
+      return;
+    }
+    
+    dom.loaner.offlineNotice.hidden = true;
+    dom.loaner.btnCheckout.disabled = false;
+    dom.loaner.btnReturn.disabled = false;
+    
+    // Fetch loaner status
+    dom.loaner.status.innerHTML = '<div class="loaner-status-loading">Checking availability...</div>';
+    
+    try {
+      const response = await fetch(`${LOANER_API_URL}?action=status`);
+      const data = await response.json();
+      
+      if (data.success) {
+        state.loanerStatus = data;
+        
+        if (data.available > 0) {
+          dom.loaner.status.innerHTML = `
+            <span class="loaner-status-count">${data.available}</span>
+            <span class="loaner-status-available">Chromebook${data.available !== 1 ? 's' : ''} available for checkout</span>
+          `;
+          dom.loaner.btnCheckout.disabled = false;
+        } else {
+          dom.loaner.status.innerHTML = `
+            <span class="loaner-status-unavailable">No Chromebooks currently available</span>
+            <p style="margin-top: var(--space-sm); color: var(--color-text-secondary);">
+              All ${data.total} devices are checked out. Please check back later or see a staff member.
+            </p>
+          `;
+          dom.loaner.btnCheckout.disabled = true;
+        }
+      } else {
+        throw new Error(data.error || 'Unknown error');
+      }
+    } catch (error) {
+      console.error('Loaner status error:', error);
+      dom.loaner.status.innerHTML = `
+        <div class="loaner-status-unavailable">Unable to check availability</div>
+        <p style="margin-top: var(--space-sm); color: var(--color-text-secondary);">
+          ${error.message}. Please see a staff member for assistance.
+        </p>
+      `;
+      dom.loaner.btnCheckout.disabled = true;
+    }
+  }
+  
+  function showLoanerCheckout() {
+    // Clear form
+    dom.loaner.checkoutName.value = '';
+    dom.loaner.checkoutStudentId.value = '';
+    dom.loaner.checkoutError.hidden = true;
+    
+    showScreen('loanerCheckout');
+    dom.loaner.checkoutName.focus();
+  }
+  
+  function showLoanerReturn() {
+    // Clear form
+    dom.loaner.returnAssetTag.value = '';
+    dom.loaner.returnError.hidden = true;
+    
+    showScreen('loanerReturn');
+    dom.loaner.returnAssetTag.focus();
+  }
+  
+  async function handleCheckoutSubmit() {
+    const name = dom.loaner.checkoutName.value.trim();
+    const studentId = dom.loaner.checkoutStudentId.value.trim();
+    
+    // Validation
+    if (!name) {
+      showCheckoutError('Please enter your full name.');
+      dom.loaner.checkoutName.focus();
+      return;
+    }
+    
+    if (!studentId) {
+      showCheckoutError('Please enter your student ID.');
+      dom.loaner.checkoutStudentId.focus();
+      return;
+    }
+    
+    // Disable button while processing
+    dom.loaner.btnCheckoutSubmit.disabled = true;
+    dom.loaner.btnCheckoutSubmit.innerHTML = `
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spinning">
+        <circle cx="12" cy="12" r="10" stroke-dasharray="32" stroke-dashoffset="32"></circle>
+      </svg>
+      Processing...
+    `;
+    
+    try {
+      const response = await fetch(LOANER_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'checkout',
+          name: name,
+          studentId: studentId
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        showLoanerSuccess('checkout', data);
+      } else {
+        showCheckoutError(data.error || 'Checkout failed. Please try again.');
+      }
+    } catch (error) {
+      console.error('Checkout error:', error);
+      showCheckoutError('Network error. Please check your connection and try again.');
+    } finally {
+      // Re-enable button
+      dom.loaner.btnCheckoutSubmit.disabled = false;
+      dom.loaner.btnCheckoutSubmit.innerHTML = `
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        Check Out Chromebook
+      `;
+    }
+  }
+  
+  async function handleReturnSubmit() {
+    const assetTag = dom.loaner.returnAssetTag.value.trim();
+    
+    // Validation
+    if (!assetTag) {
+      showReturnError('Please enter the asset tag number.');
+      dom.loaner.returnAssetTag.focus();
+      return;
+    }
+    
+    // Disable button while processing
+    dom.loaner.btnReturnSubmit.disabled = true;
+    dom.loaner.btnReturnSubmit.innerHTML = `
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spinning">
+        <circle cx="12" cy="12" r="10" stroke-dasharray="32" stroke-dashoffset="32"></circle>
+      </svg>
+      Processing...
+    `;
+    
+    try {
+      const response = await fetch(LOANER_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'return',
+          assetTag: assetTag
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        showLoanerSuccess('return', data);
+      } else {
+        showReturnError(data.error || 'Return failed. Please try again.');
+      }
+    } catch (error) {
+      console.error('Return error:', error);
+      showReturnError('Network error. Please check your connection and try again.');
+    } finally {
+      // Re-enable button
+      dom.loaner.btnReturnSubmit.disabled = false;
+      dom.loaner.btnReturnSubmit.innerHTML = `
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        Return Chromebook
+      `;
+    }
+  }
+  
+  function showCheckoutError(message) {
+    dom.loaner.checkoutError.textContent = message;
+    dom.loaner.checkoutError.hidden = false;
+  }
+  
+  function showReturnError(message) {
+    dom.loaner.returnError.textContent = message;
+    dom.loaner.returnError.hidden = false;
+  }
+  
+  function showLoanerSuccess(type, data) {
+    if (type === 'checkout') {
+      dom.loaner.successMessage.textContent = 'Chromebook checked out successfully!';
+      dom.loaner.successDetails.innerHTML = `
+        <p><strong>Asset Tag:</strong> <span class="asset-tag">${data.assetTag}</span></p>
+        <p><strong>Checked out to:</strong> ${data.borrowerName}</p>
+        <p><strong>Time:</strong> ${data.checkoutTime}</p>
+        <p style="margin-top: var(--space-md); font-weight: 500;">Please return this Chromebook by the end of the day.</p>
+      `;
+    } else {
+      dom.loaner.successMessage.textContent = 'Chromebook returned successfully!';
+      dom.loaner.successDetails.innerHTML = `
+        <p><strong>Asset Tag:</strong> <span class="asset-tag">${data.assetTag}</span></p>
+        <p><strong>Returned at:</strong> ${data.returnTime}</p>
+        <p style="margin-top: var(--space-md);">Thank you for returning the device!</p>
+      `;
+    }
+    
+    showScreen('loanerSuccess');
+    startLoanerSuccessCountdown();
+  }
+  
+  let loanerCountdownInterval = null;
+  
+  function startLoanerSuccessCountdown() {
+    let secondsLeft = LOANER_SUCCESS_TIMEOUT;
+    
+    dom.loaner.countdownSeconds.textContent = secondsLeft;
+    
+    // Clear any existing interval
+    if (loanerCountdownInterval) {
+      clearInterval(loanerCountdownInterval);
+    }
+    
+    loanerCountdownInterval = setInterval(() => {
+      secondsLeft--;
+      dom.loaner.countdownSeconds.textContent = secondsLeft;
+      
+      if (secondsLeft <= 0) {
+        clearInterval(loanerCountdownInterval);
+        loanerCountdownInterval = null;
+        goHome();
+      }
+    }, 1000);
+  }
+  
+  function clearLoanerCountdown() {
+    if (loanerCountdownInterval) {
+      clearInterval(loanerCountdownInterval);
+      loanerCountdownInterval = null;
+    }
   }
 
   // ========================================
