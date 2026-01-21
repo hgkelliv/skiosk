@@ -17,7 +17,7 @@
   // ========================================
   
   // IMPORTANT: Replace this URL with your Google Apps Script Web App URL
-  const LOANER_API_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+  const LOANER_API_URL = 'https://script.google.com/macros/s/AKfycbzWXYWYRLg8DbcJqvIGiLioa7AWhd0Cbm4LTsgSW4IGUrojPIwt3VQ0E9X7_iwbrcWH4A/exec';
   
   // ========================================
   // State Management (minimal, local only)
