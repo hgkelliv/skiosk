@@ -19,8 +19,8 @@
         ]
       },
       {
-        "instruction": "**Password Can't be Verified**\n\nFirst, Remove your account from your Chromebook.\n\n1. On the lock screen, click the small arrow next to your last name. \n2. As message will appear asking if you want to Remove the account. Click Remove account. Click again to confirm.\n3. In the bottom left corner of your screen, click Shut Down to shut down your Chromebook. Once your Chromebook is shut down, press the power button again to turn it back on, then attempt to sign in to your Chromebook again.",
-        "details": "Make sure you are on the Sign in to Google page on your device to sign in properly.",
+        "instruction": "**Password Issues**\n\nFirst, let's make sure you're using the right password.\n\n1. Check that `Caps Lock` is OFF (look for the light on your keyboard)\n2. Make sure you're typing your **school email password**, not a personal account password\n3. Try typing your password in the username field first to see what you're typing, then clear it",
+        "details": "School passwords are often different from your personal Google account password. Your password may also be your lunch code/student ID number.",
         "fixedLabel": "I can sign in now",
         "notFixedLabel": "Still can't sign in"
       },
@@ -214,7 +214,7 @@
       },
       {
         "instruction": "**Network Restrictions**\n\nSome networks have restrictions that affect Chromebooks:\n\n1. **MAC address filtering** — Ask Tech Support if your Chromebook is allowed on the network\n2. **Device limits** — Some networks limit how many devices can connect\n3. **Chromebook-specific blocks** — Rarely, networks may block Chrome OS devices\n\n**Ask your IT department** if Chromebooks are supported on this network.",
-        "fixedLabel": "Tech Support helped me connect",
+        "fixedLabel": "IT helped me connect",
         "notFixedLabel": "Need more help"
       }
     ]
@@ -439,41 +439,6 @@
         "instruction": "**Audio Output Settings**\n\n1. Click the **time** → then click the **volume slider**\n2. Click the **arrow** next to the volume slider\n3. Check which **output device** is selected\n4. Select **\"Internal speaker\"** if available\n\n**If headphone jack is damaged,** the Chromebook might think headphones are always connected. This requires repair.",
         "fixedLabel": "Found the right output!",
         "notFixedLabel": "Output is correct, still no sound"
-      }
-    ]
-  },
-
-  "loaner": {
-    "id": "loaner",
-    "title": "Loaner Equipment",
-    "description": "Borrow a Chromebook or charger",
-    "steps": [
-      {
-        "instruction": "**What do you need to borrow?**",
-        "type": "branch",
-        "options": [
-          {
-            "label": "I need a loaner charger",
-            "gotoStep": 1
-          },
-          {
-            "label": "I need a loaner Chromebook",
-            "gotoStep": 2
-          }
-        ]
-      },
-      {
-        "instruction": "**Loaner Charger**\n\n**Step 1:** Check to make sure there are loaner chargers available. You should see colored chargers close to this device. If you do not see any, then they are currently unavailable.\n\n**Step 2:** If there are chargers available, you must fill out the **Borrowed Charger Agreement** document located on the clipboard with your name and date, and agree to the terms.\n\n**Step 3:** Chargers must be returned when your device is fully charged.\n\n**Step 4:** When you return the charger, you must fill out the bottom section of the form to complete the return.",
-        "warning": "Failure to return the charger may result in loss of borrowing privileges.",
-        "fixedLabel": "Got it, I'll fill out the form",
-        "notFixedLabel": "No chargers available"
-      },
-      {
-        "instruction": "**Loaner Chromebook**\n\nTo borrow a loaner Chromebook, you must:\n\n1. **See a staff member** — Loaner Chromebooks cannot be self-issued\n2. **Submit a tech ticket** — This documents your request and helps us track devices\n\nClick below to submit a ticket for a loaner Chromebook.",
-        "ticketUrl": "https://airtable.com/appebVtuYEdmMqcn4/pagqIveB6XR6pqpEs/form",
-        "requiresInternet": true,
-        "fixedLabel": "Submit a ticket for loaner Chromebook",
-        "notFixedLabel": "I need something else"
       }
     ]
   }
