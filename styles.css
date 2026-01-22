@@ -974,6 +974,67 @@ button:focus:not(:focus-visible) {
   text-align: center;
 }
 
+/* Available devices grid */
+.available-devices-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: var(--space-md);
+  margin-top: var(--space-sm);
+}
+
+.loading-devices {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--color-text-secondary);
+  padding: var(--space-lg);
+}
+
+.device-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  padding: var(--space-lg);
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.device-btn:hover {
+  border-color: var(--color-primary);
+  background-color: rgba(26, 115, 232, 0.05);
+}
+
+.device-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.device-btn .device-icon {
+  color: var(--color-primary);
+}
+
+.device-btn .device-tag {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.device-btn .device-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.no-devices-message {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: var(--space-xl);
+  color: var(--color-text-secondary);
+}
+
 .loaner-success-content {
   display: flex;
   flex-direction: column;
