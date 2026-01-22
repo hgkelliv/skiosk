@@ -17,7 +17,7 @@
   // ========================================
   
   // IMPORTANT: Replace this URL with your Google Apps Script Web App URL
-  const LOANER_API_URL = 'https://script.google.com/macros/s/AKfycbwKwi3td7hCC5FQVFpMHedv9MV5Fk_k8sqKRfYGTdKWoMjPuKMIaMcfNaNO-viXH_ShgQ/exec';
+  const LOANER_API_URL = 'https://script.google.com/macros/s/AKfycbxiwBMuR5DLHmJl9_CTG3pNP75YkHpUJicyfYQgXr-goDxf8UhraNLAwghrCCnEyQckOg/exec';
   
   // ========================================
   // State Management (minimal, local only)
@@ -916,16 +916,14 @@
     }
     
     try {
-      const response = await fetch(LOANER_API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'checkout',
-          name: name,
-          assetTag: assetTag
-        })
+      // Use GET request to avoid CORS issues with Apps Script
+      const params = new URLSearchParams({
+        action: 'checkout',
+        name: name,
+        assetTag: assetTag
       });
       
+      const response = await fetch(`${LOANER_API_URL}?${params.toString()}`);
       const data = await response.json();
       
       if (data.success) {
@@ -961,15 +959,13 @@
     `;
     
     try {
-      const response = await fetch(LOANER_API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'return',
-          assetTag: assetTag
-        })
+      // Use GET request to avoid CORS issues with Apps Script
+      const params = new URLSearchParams({
+        action: 'return',
+        assetTag: assetTag
       });
       
+      const response = await fetch(`${LOANER_API_URL}?${params.toString()}`);
       const data = await response.json();
       
       if (data.success) {
