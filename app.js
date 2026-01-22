@@ -17,7 +17,7 @@
   // ========================================
   
   // IMPORTANT: Replace this URL with your Google Apps Script Web App URL
-  const LOANER_API_URL = 'https://script.google.com/macros/s/AKfycbwKwi3td7hCC5FQVFpMHedv9MV5Fk_k8sqKRfYGTdKWoMjPuKMIaMcfNaNO-viXH_ShgQ/exec';
+  const LOANER_API_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
   
   // ========================================
   // State Management (minimal, local only)
@@ -122,8 +122,7 @@
     dom.loaner.btnCheckout = document.getElementById('btn-loaner-checkout');
     dom.loaner.btnReturn = document.getElementById('btn-loaner-return');
     dom.loaner.checkoutName = document.getElementById('checkout-name');
-    dom.loaner.checkoutStudentId = document.getElementById('checkout-student-id');
-    dom.loaner.btnCheckoutSubmit = document.getElementById('btn-checkout-submit');
+    dom.loaner.availableDevices = document.getElementById('available-devices');
     dom.loaner.btnCheckoutCancel = document.getElementById('btn-checkout-cancel');
     dom.loaner.checkoutError = document.getElementById('checkout-error');
     dom.loaner.returnAssetTag = document.getElementById('return-asset-tag');
@@ -245,8 +244,13 @@
       showLoanerReturn();
       return;
     }
-    if (e.target.closest('#btn-checkout-submit')) {
-      handleCheckoutSubmit();
+    // Device selection button
+    if (e.target.closest('.device-btn')) {
+      const btn = e.target.closest('.device-btn');
+      const assetTag = btn.dataset.assetTag;
+      if (assetTag) {
+        handleDeviceSelect(assetTag);
+      }
       return;
     }
     if (e.target.closest('#btn-checkout-cancel')) {
@@ -819,14 +823,49 @@
     }
   }
   
-  function showLoanerCheckout() {
+  async function showLoanerCheckout() {
     // Clear form
     dom.loaner.checkoutName.value = '';
-    dom.loaner.checkoutStudentId.value = '';
     dom.loaner.checkoutError.hidden = true;
+    dom.loaner.availableDevices.innerHTML = '<div class="loading-devices">Loading available devices...</div>';
     
     showScreen('loanerCheckout');
     dom.loaner.checkoutName.focus();
+    
+    // Fetch available devices
+    try {
+      const response = await fetch(`${LOANER_API_URL}?action=available`);
+      const data = await response.json();
+      
+      if (data.success && data.devices && data.devices.length > 0) {
+        // Render device buttons
+        dom.loaner.availableDevices.innerHTML = data.devices.map(device => `
+          <button type="button" class="device-btn" data-asset-tag="${device.assetTag}">
+            <svg class="device-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+              <line x1="2" y1="20" x2="22" y2="20"></line>
+            </svg>
+            <span class="device-tag">${device.assetTag}</span>
+            <span class="device-label">Tap to select</span>
+          </button>
+        `).join('');
+      } else {
+        dom.loaner.availableDevices.innerHTML = `
+          <div class="no-devices-message">
+            <p>No Chromebooks currently available.</p>
+            <p>Please check back later or see a staff member.</p>
+          </div>
+        `;
+      }
+    } catch (error) {
+      console.error('Error fetching devices:', error);
+      dom.loaner.availableDevices.innerHTML = `
+        <div class="no-devices-message">
+          <p>Unable to load available devices.</p>
+          <p>Please see a staff member for assistance.</p>
+        </div>
+      `;
+    }
   }
   
   function showLoanerReturn() {
@@ -838,31 +877,29 @@
     dom.loaner.returnAssetTag.focus();
   }
   
-  async function handleCheckoutSubmit() {
+  async function handleDeviceSelect(assetTag) {
     const name = dom.loaner.checkoutName.value.trim();
-    const studentId = dom.loaner.checkoutStudentId.value.trim();
     
     // Validation
     if (!name) {
-      showCheckoutError('Please enter your full name.');
+      showCheckoutError('Please enter your full name first, then select a device.');
       dom.loaner.checkoutName.focus();
       return;
     }
     
-    if (!studentId) {
-      showCheckoutError('Please enter your student ID.');
-      dom.loaner.checkoutStudentId.focus();
-      return;
-    }
-    
-    // Disable button while processing
-    dom.loaner.btnCheckoutSubmit.disabled = true;
-    dom.loaner.btnCheckoutSubmit.innerHTML = `
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spinning">
-        <circle cx="12" cy="12" r="10" stroke-dasharray="32" stroke-dashoffset="32"></circle>
-      </svg>
-      Processing...
-    `;
+    // Disable all device buttons while processing
+    const deviceBtns = dom.loaner.availableDevices.querySelectorAll('.device-btn');
+    deviceBtns.forEach(btn => {
+      btn.disabled = true;
+      if (btn.dataset.assetTag === assetTag) {
+        btn.innerHTML = `
+          <svg class="spinning" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10" stroke-dasharray="32" stroke-dashoffset="32"></circle>
+          </svg>
+          <span class="device-tag">Processing...</span>
+        `;
+      }
+    });
     
     try {
       const response = await fetch(LOANER_API_URL, {
@@ -871,7 +908,7 @@
         body: JSON.stringify({
           action: 'checkout',
           name: name,
-          studentId: studentId
+          assetTag: assetTag
         })
       });
       
@@ -881,19 +918,14 @@
         showLoanerSuccess('checkout', data);
       } else {
         showCheckoutError(data.error || 'Checkout failed. Please try again.');
+        // Re-enable buttons
+        showLoanerCheckout();
       }
     } catch (error) {
       console.error('Checkout error:', error);
       showCheckoutError('Network error. Please check your connection and try again.');
-    } finally {
-      // Re-enable button
-      dom.loaner.btnCheckoutSubmit.disabled = false;
-      dom.loaner.btnCheckoutSubmit.innerHTML = `
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-          <polyline points="20 6 9 17 4 12"></polyline>
-        </svg>
-        Check Out Chromebook
-      `;
+      // Re-enable buttons
+      showLoanerCheckout();
     }
   }
   
