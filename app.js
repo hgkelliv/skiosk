@@ -887,10 +887,16 @@
       return;
     }
     
+    // Hide any previous error
+    dom.loaner.checkoutError.hidden = true;
+    
     // Disable all device buttons while processing
     const deviceBtns = dom.loaner.availableDevices.querySelectorAll('.device-btn');
+    const originalButtonHTML = {};
+    
     deviceBtns.forEach(btn => {
       btn.disabled = true;
+      originalButtonHTML[btn.dataset.assetTag] = btn.innerHTML;
       if (btn.dataset.assetTag === assetTag) {
         btn.innerHTML = `
           <svg class="spinning" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -900,6 +906,14 @@
         `;
       }
     });
+    
+    // Helper to re-enable buttons on error
+    function reEnableButtons() {
+      deviceBtns.forEach(btn => {
+        btn.disabled = false;
+        btn.innerHTML = originalButtonHTML[btn.dataset.assetTag];
+      });
+    }
     
     try {
       const response = await fetch(LOANER_API_URL, {
@@ -918,14 +932,12 @@
         showLoanerSuccess('checkout', data);
       } else {
         showCheckoutError(data.error || 'Checkout failed. Please try again.');
-        // Re-enable buttons
-        showLoanerCheckout();
+        reEnableButtons();
       }
     } catch (error) {
       console.error('Checkout error:', error);
-      showCheckoutError('Network error. Please check your connection and try again.');
-      // Re-enable buttons
-      showLoanerCheckout();
+      showCheckoutError('Network error: ' + error.message);
+      reEnableButtons();
     }
   }
   
