@@ -328,7 +328,7 @@
         <h2 id="loaner-checkout-heading" class="screen-heading">Borrow a Chromebook</h2>
         
         <div class="loaner-form-container">
-          <p class="loaner-form-intro">Enter your information to borrow a Chromebook. You must return it by the end of the day.</p>
+          <p class="loaner-form-intro">Enter your name, then select the Chromebook you are taking.</p>
           
           <div class="loaner-form">
             <label class="form-field">
@@ -336,17 +336,12 @@
               <input type="text" id="checkout-name" class="form-input" placeholder="e.g., Maria Santos" maxlength="100" required>
             </label>
             
-            <label class="form-field">
-              <span class="form-label">Student ID <span class="required">*</span></span>
-              <input type="text" id="checkout-student-id" class="form-input" placeholder="e.g., 12345" maxlength="20" required>
-            </label>
-            
-            <button id="btn-checkout-submit" class="btn btn-success btn-large btn-block">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
-              Check Out Chromebook
-            </button>
+            <div class="form-field">
+              <span class="form-label">Select the Chromebook you are taking <span class="required">*</span></span>
+              <div id="available-devices" class="available-devices-grid">
+                <div class="loading-devices">Loading available devices...</div>
+              </div>
+            </div>
             
             <button id="btn-checkout-cancel" class="btn btn-secondary btn-block">Cancel</button>
           </div>
